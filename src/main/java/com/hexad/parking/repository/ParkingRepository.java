@@ -19,12 +19,14 @@ public interface ParkingRepository
      * Returns the next slot available
      * @return a Slot or absent if none
      */
-    Optional<Slot> getFreeSlots();
+    Optional<Slot> getFreeSlot();
 
     /**
      * Assigns a vehicle to a free slot
      * @param vehicle
      * @return the occupied slot or absent if none
      */
-    Optional<Slot> park(final Vehicle vehicle);
+    Optional<Slot> assignSlot(final Vehicle vehicle);
+
+    void unassignSlot(final Slot slot);
 }

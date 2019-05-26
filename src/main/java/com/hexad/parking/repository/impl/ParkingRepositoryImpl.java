@@ -1,17 +1,17 @@
 package com.hexad.parking.repository.impl;
 
-import static com.hexad.parking.common.error.ErrorConstants.NOT_EMPTY_PARKING_ALLOWED;
+import static com.hexad.parking.common.constants.MessagesConstants.PARKING_EMPTY_NOT_ALLOWED;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import com.hexad.parking.common.ParkingLotException;
+import com.hexad.parking.common.exceptions.ParkingLotException;
 import com.hexad.parking.domain.Slot;
 import com.hexad.parking.domain.Vehicle;
 import com.hexad.parking.repository.ParkingRepository;
-import com.hexad.parking.util.SlotComparator;
+import com.hexad.parking.common.SlotComparator;
 
 
 public class ParkingRepositoryImpl implements ParkingRepository
@@ -24,7 +24,6 @@ public class ParkingRepositoryImpl implements ParkingRepository
     {
         this.parkingSlots = initializeSlots(size);
         this.freeSlots = initializeSlotsPriority();
-
     }
 
     private Map<Slot, Vehicle> initializeSlots(final int size)
@@ -41,7 +40,7 @@ public class ParkingRepositoryImpl implements ParkingRepository
     {
         if (parkingSlots.isEmpty())
         {
-            throw new ParkingLotException(NOT_EMPTY_PARKING_ALLOWED);
+            throw new ParkingLotException(PARKING_EMPTY_NOT_ALLOWED);
         }
         final PriorityBlockingQueue<Slot> queue = new PriorityBlockingQueue<>(parkingSlots.size(), new SlotComparator());
         queue.addAll(parkingSlots.keySet());
@@ -56,20 +55,27 @@ public class ParkingRepositoryImpl implements ParkingRepository
     }
 
     @Override
-    public Optional<Slot> getFreeSlots()
+    public Optional<Slot> getFreeSlot()
     {
         return Optional.ofNullable(freeSlots.poll());
     }
 
     @Override
-    public Optional<Slot> park(final Vehicle vehicle)
+    public Optional<Slot> assignSlot(final Vehicle vehicle)
     {
-        Optional<Slot> freeSlot = getFreeSlots();
+        Optional<Slot> freeSlot = getFreeSlot();
         if (freeSlot.isPresent())
         {
             parkingSlots.put(freeSlot.get(), vehicle);
         }
         return freeSlot;
+    }
+
+    @Override
+    public void unassignSlot(final Slot slot)
+    {
+        parkingSlots.put(slot, null);
+        freeSlots.add(slot);
     }
 
 }
