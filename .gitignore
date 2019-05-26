@@ -1,0 +1,6 @@
+build/
+.project/
+.settings/
+.idea/
+.gradle/
+out/
