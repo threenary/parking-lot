@@ -1,4 +1,4 @@
-package com.hexad.parking.util;
+package com.hexad.parking.domain;
 
 import java.util.Comparator;
 

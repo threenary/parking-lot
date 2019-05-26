@@ -13,6 +13,7 @@ actually handing over a ticket to the driver (we assume that our customers are n
 enough to always park in the slots allocated to them). The customer should be
 allocated a parking slot which is nearest to the entry. At the exit the customer returns
 the ticket which then marks the slot they were using as being available.
+``
 Due to government regulation, the system should provide me with the ability to find
 out:
 * Registration numbers of all cars of a particular color.
@@ -75,7 +76,8 @@ Allocated slot number: 4
 Sorry, parking lot is full
 KA-01-HH-1234, KA-01-HH-9999, KA-01-P-333
 1, 2, 4
-6 Not found
+6
+Not found
 ```
 ## Example: Interactive
 To run the program and launch the shell: $ ./parking_lot
