@@ -1,4 +1,4 @@
-package com.hexad.parking.common;
+package com.hexad.parking.common.exceptions;
 
 public class ParkingLotException extends Exception
 {

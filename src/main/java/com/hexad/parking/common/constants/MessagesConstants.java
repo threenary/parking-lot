@@ -1,6 +1,6 @@
-package com.hexad.parking.common.error;
+package com.hexad.parking.common.constants;
 
-public interface ErrorConstants
+public interface MessagesConstants
 {
     String PARKING_EMPTY_NOT_ALLOWED = "Can't create an empty Parking Lot service";
 

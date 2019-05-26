@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.hexad.parking.domain.Slot;
+import com.hexad.parking.common.SlotComparator;
 
 
 public class SlotComparatorTest
