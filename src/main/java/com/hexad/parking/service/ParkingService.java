@@ -1,5 +1,6 @@
 package com.hexad.parking.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.hexad.parking.domain.Parking;
@@ -9,13 +10,6 @@ import com.hexad.parking.domain.Vehicle;
 
 public interface ParkingService
 {
-    /**
-     * Entrey point to create a parking lot
-     * @param size
-     * @return a brand new and empty {@link Parking}
-     */
-    Parking createParking(final int size);
-
     /**
      * Returns the empty slots in the Parking
      * @return the number of {@link Slot} without {@link Vehicle}
@@ -35,6 +29,11 @@ public interface ParkingService
      * @param slot
      * @return the empty slot if present
      */
-    Optional<Slot> freeSlot(final Slot slot);
+    Optional<Slot> emptySlot(final Slot slot);
 
+    /**
+     * Returns a current picture of all the parking status
+     * @return a Map containing Slot-Vehicle association
+     */
+    Map<Slot, Vehicle> status();
 }

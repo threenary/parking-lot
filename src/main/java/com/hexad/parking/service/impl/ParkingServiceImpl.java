@@ -1,10 +1,13 @@
 package com.hexad.parking.service.impl;
 
+import static com.hexad.parking.common.constants.MessagesConstants.PARKING_EMPTY_NOT_ALLOWED;
+import static com.hexad.parking.common.constants.MessagesConstants.PARKING_FULL;
+
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.hexad.parking.common.ParkingLotException;
-import com.hexad.parking.domain.Parking;
+import com.hexad.parking.common.exceptions.ParkingLotException;
 import com.hexad.parking.domain.Slot;
 import com.hexad.parking.domain.Vehicle;
 import com.hexad.parking.repository.ParkingRepository;
@@ -18,13 +21,11 @@ public class ParkingServiceImpl implements ParkingService
 
     public ParkingServiceImpl(final int size) throws ParkingLotException
     {
+        if (size == 0)
+        {
+            throw new ParkingLotException(PARKING_EMPTY_NOT_ALLOWED);
+        }
         repository = new ParkingRepositoryImpl(size);
-    }
-
-    @Override
-    public Parking createParking(final int size)
-    {
-        return null;
     }
 
     @Override
@@ -36,12 +37,23 @@ public class ParkingServiceImpl implements ParkingService
     @Override
     public Optional<Slot> park(final Vehicle vehicle)
     {
-        return repository.park(vehicle);
+        Optional<Slot> slot = repository.assignSlot(vehicle);
+        if (!slot.isPresent())
+        {
+            System.out.println(PARKING_FULL);
+        }
+        return slot;
     }
 
     @Override
-    public Optional<Slot> freeSlot(final Slot slot)
+    public Optional<Slot> emptySlot(final Slot slot)
     {
         return Optional.empty();
+    }
+
+    @Override
+    public Map<Slot, Vehicle> status()
+    {
+        return repository.getStatus();
     }
 }
