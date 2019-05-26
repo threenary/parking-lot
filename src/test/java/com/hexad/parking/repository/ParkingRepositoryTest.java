@@ -13,7 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.hexad.parking.common.exceptions.RepositoryException;
+import com.hexad.parking.common.exceptions.ParkingLotException;
 import com.hexad.parking.domain.Slot;
 import com.hexad.parking.domain.Vehicle;
 import com.hexad.parking.repository.impl.ParkingRepositoryImpl;
@@ -36,7 +36,7 @@ public class ParkingRepositoryTest
     private ParkingRepository testSubject;
 
     @Test
-    public void getStatusTest() throws RepositoryException
+    public void getStatusTest() throws ParkingLotException
     {
         //given + when
         testSubject = new ParkingRepositoryImpl(SIZE);
@@ -46,7 +46,7 @@ public class ParkingRepositoryTest
     }
 
     @Test
-    public void getNextSlotTest() throws RepositoryException
+    public void getNextSlotTest() throws ParkingLotException
     {
         //given
         testSubject = new ParkingRepositoryImpl(SIZE);
@@ -61,7 +61,7 @@ public class ParkingRepositoryTest
     }
 
     @Test
-    public void getNextSlotEmptyTest() throws RepositoryException
+    public void getNextSlotEmptyTest() throws ParkingLotException
     {
         //given
         testSubject = new ParkingRepositoryImpl(1);
@@ -76,7 +76,7 @@ public class ParkingRepositoryTest
     }
 
     @Test
-    public void assignAvailableSlotForVehicleTest() throws RepositoryException
+    public void assignAvailableSlotForVehicleTest() throws ParkingLotException
     {
         //given
         testSubject = new ParkingRepositoryImpl(1);
@@ -92,7 +92,7 @@ public class ParkingRepositoryTest
     }
 
     @Test
-    public void assignAvailableSlotForMoreVehiclesTest() throws RepositoryException
+    public void assignAvailableSlotForMoreVehiclesTest() throws ParkingLotException
     {
         //given
         testSubject = new ParkingRepositoryImpl(SIZE);
@@ -109,7 +109,7 @@ public class ParkingRepositoryTest
     }
 
     @Test
-    public void unassignSlotTest() throws RepositoryException
+    public void unassignSlotTest() throws ParkingLotException
     {
         //given
         testSubject = new ParkingRepositoryImpl(SIZE);
@@ -123,7 +123,7 @@ public class ParkingRepositoryTest
     }
 
     @Test
-    public void unassignSecondSlotTest() throws RepositoryException
+    public void unassignSecondSlotTest() throws ParkingLotException
     {
         //given
         testSubject = new ParkingRepositoryImpl(SIZE);
@@ -139,10 +139,10 @@ public class ParkingRepositoryTest
     }
 
     @Test
-    public void createEmptySlotsRepositoryThrowsExceptionTest() throws RepositoryException
+    public void createEmptySlotsRepositoryThrowsExceptionTest() throws ParkingLotException
     {
         //given
-        expectedException.expect(RepositoryException.class);
+        expectedException.expect(ParkingLotException.class);
         testSubject = new ParkingRepositoryImpl(0);
 
         //otherwise
