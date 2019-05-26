@@ -7,11 +7,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import com.hexad.parking.common.SlotComparator;
 import com.hexad.parking.common.exceptions.ParkingLotException;
+import com.hexad.parking.common.exceptions.RepositoryException;
 import com.hexad.parking.domain.Slot;
 import com.hexad.parking.domain.Vehicle;
 import com.hexad.parking.repository.ParkingRepository;
-import com.hexad.parking.common.SlotComparator;
 
 
 public class ParkingRepositoryImpl implements ParkingRepository
@@ -20,7 +21,7 @@ public class ParkingRepositoryImpl implements ParkingRepository
 
     private PriorityBlockingQueue<Slot> freeSlots;
 
-    public ParkingRepositoryImpl(final int size) throws ParkingLotException
+    public ParkingRepositoryImpl(final int size) throws RepositoryException
     {
         this.parkingSlots = initializeSlots(size);
         this.freeSlots = initializeSlotsPriority();
@@ -36,11 +37,11 @@ public class ParkingRepositoryImpl implements ParkingRepository
         return slots;
     }
 
-    private PriorityBlockingQueue<Slot> initializeSlotsPriority() throws ParkingLotException
+    private PriorityBlockingQueue<Slot> initializeSlotsPriority() throws RepositoryException
     {
         if (parkingSlots.isEmpty())
         {
-            throw new ParkingLotException(PARKING_EMPTY_NOT_ALLOWED);
+            throw new RepositoryException(PARKING_EMPTY_NOT_ALLOWED);
         }
         final PriorityBlockingQueue<Slot> queue = new PriorityBlockingQueue<>(parkingSlots.size(), new SlotComparator());
         queue.addAll(parkingSlots.keySet());
