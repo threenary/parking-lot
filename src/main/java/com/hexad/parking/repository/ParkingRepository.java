@@ -28,5 +28,9 @@ public interface ParkingRepository
      */
     Optional<Slot> assignSlot(final Vehicle vehicle);
 
-    void unassignSlot(final Slot slot);
+    /**
+     * Frees an occupied slot
+     * @param slot
+     */
+    Slot unassignSlot(final Slot slot);
 }

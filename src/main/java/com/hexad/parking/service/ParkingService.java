@@ -29,7 +29,7 @@ public interface ParkingService
      * @param slot
      * @return the empty slot if present
      */
-    Optional<Slot> emptySlot(final Slot slot);
+    Slot emptySlot(final Slot slot);
 
     /**
      * Returns a current picture of all the parking status

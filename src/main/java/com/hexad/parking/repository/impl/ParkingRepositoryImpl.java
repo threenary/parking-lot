@@ -72,10 +72,14 @@ public class ParkingRepositoryImpl implements ParkingRepository
     }
 
     @Override
-    public void unassignSlot(final Slot slot)
+    public Slot unassignSlot(final Slot slot)
     {
-        parkingSlots.put(slot, null);
-        freeSlots.add(slot);
+        if (parkingSlots.get(slot) != null)
+        {
+            parkingSlots.put(slot, null);
+            freeSlots.add(slot);
+        }
+        return slot;
     }
 
 }

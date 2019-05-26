@@ -1,7 +1,10 @@
 package com.hexad.parking.service.impl;
 
+import static com.hexad.parking.common.constants.MessagesConstants.PARKING_CREATED;
 import static com.hexad.parking.common.constants.MessagesConstants.PARKING_EMPTY_NOT_ALLOWED;
 import static com.hexad.parking.common.constants.MessagesConstants.PARKING_FULL;
+import static com.hexad.parking.common.constants.MessagesConstants.SLOT_ALLOCATED;
+import static com.hexad.parking.common.constants.MessagesConstants.SLOT_FREE;
 
 import java.util.Map;
 import java.util.Objects;
@@ -26,6 +29,7 @@ public class ParkingServiceImpl implements ParkingService
             throw new ParkingLotException(PARKING_EMPTY_NOT_ALLOWED);
         }
         repository = new ParkingRepositoryImpl(size);
+        System.out.println(String.format(PARKING_CREATED, size));
     }
 
     @Override
@@ -42,18 +46,49 @@ public class ParkingServiceImpl implements ParkingService
         {
             System.out.println(PARKING_FULL);
         }
+        else
+        {
+            System.out.println(String.format(SLOT_ALLOCATED, slot.get().getSlotId()));
+        }
         return slot;
     }
 
     @Override
-    public Optional<Slot> emptySlot(final Slot slot)
+    public Slot emptySlot(final Slot slot)
     {
-        return Optional.empty();
+        final Slot result = repository.unassignSlot(slot);
+        if (null != result)
+        {
+            System.out.println(String.format(SLOT_FREE, slot.getSlotId()));
+        }
+        return result;
     }
 
     @Override
     public Map<Slot, Vehicle> status()
     {
-        return repository.getStatus();
+        System.out.println("Slot No.\tRegistration No.\tColor");
+        Map<Slot, Vehicle> status = repository.getStatus();
+        printStatus(status);
+        return status;
+    }
+
+    private void printStatus(final Map<Slot, Vehicle> status)
+    {
+        if (status.size() == 0)
+        {
+            System.out.println("Sorry, parking lot is empty.");
+        }
+        else
+        {
+            for (Slot slot : status.keySet())
+            {
+                final Vehicle vehicle = status.get(slot);
+                if (null != vehicle)
+                {
+                    System.out.println(slot.getSlotId() + "\t\t" + vehicle.getLicensePlate() + "\t\t" + vehicle.getColor());
+                }
+            }
+        }
     }
 }
