@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -81,4 +82,26 @@ public class ParkingServiceTest
         //then
         assertNull(testSubject.status().get(slot));
     }
+
+    @Test
+    public void getSlotsForColorTest()
+    {
+        //given
+        final Vehicle vehicle1 = new Vehicle("ABC 123", "Red");
+        final Optional<Slot> slot1 = testSubject.park(vehicle1);
+
+        final Vehicle vehicle2 = new Vehicle("ABC 456", "Red");
+        final Optional<Slot> slot2 = testSubject.park(vehicle1);
+
+        //when
+        List<Integer> result = testSubject.getSlotsForColor("Red");
+
+        //then
+        assertNotNull(result);
+        assertTrue(!result.isEmpty());
+        assertEquals(2, result.size());
+        assertTrue(result.contains(1));
+        assertTrue(result.contains(2));
+    }
+
 }

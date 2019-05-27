@@ -1,5 +1,6 @@
 package com.hexad.parking.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,4 +37,25 @@ public interface ParkingService
      * @return a Map containing Slot-Vehicle association
      */
     Map<Slot, Vehicle> status();
+
+    /**
+     * Returns a list of license plates for a given color of vehicle
+     * @param color
+     * @return a {@link List} of {@link String}
+     */
+    List<String> getLicensePlatesContainingColor(final String color);
+
+    /**
+     * Returns the slot for a given registration number
+     * @param licensePlate
+     * @return a {@link Slot}
+     */
+    Slot getSlotForLicensePlate(final String licensePlate);
+
+    /**
+     * Returns all the slot parks where vehicles of the given color are parked
+     * @param color
+     * @return a {@link List} of {@link Slot}
+     */
+    List<Integer> getSlotsForColor(final String color);
 }
