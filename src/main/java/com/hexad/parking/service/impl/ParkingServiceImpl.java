@@ -1,7 +1,6 @@
 package com.hexad.parking.service.impl;
 
 import static com.hexad.parking.common.constants.MessagesConstants.PARKING_CREATED;
-import static com.hexad.parking.common.constants.MessagesConstants.PARKING_EMPTY_NOT_ALLOWED;
 import static com.hexad.parking.common.constants.MessagesConstants.PARKING_FULL;
 import static com.hexad.parking.common.constants.MessagesConstants.SLOT_ALLOCATED;
 import static com.hexad.parking.common.constants.MessagesConstants.SLOT_FREE;
@@ -23,20 +22,17 @@ import com.hexad.parking.service.ParkingService;
 
 public class ParkingServiceImpl implements ParkingService
 {
-    private final ParkingRepository repository;
+    private ParkingRepository repository;
 
-    public ParkingServiceImpl(final int size) throws ParkingLotException
+    @Override
+    public void createParking(final int size) throws ParkingLotException
     {
-        if (size == 0)
-        {
-            throw new ParkingLotException(PARKING_EMPTY_NOT_ALLOWED);
-        }
         repository = new ParkingRepositoryImpl(size);
         System.out.println(String.format(PARKING_CREATED, size));
     }
 
     @Override
-    public long getFreeSlots()
+    public long getAmountOfFreeSlots()
     {
         return repository.getStatus().values().stream().filter(Objects::isNull).count();
     }
@@ -57,12 +53,12 @@ public class ParkingServiceImpl implements ParkingService
     }
 
     @Override
-    public Slot emptySlot(final Slot slot)
+    public Slot emptySlot(final int slot)
     {
-        final Slot result = repository.unassignSlot(slot);
+        final Slot result = repository.unassignSlot(new Slot(slot));
         if (null != result)
         {
-            System.out.println(String.format(SLOT_FREE, slot.getSlotId()));
+            System.out.println(String.format(SLOT_FREE, slot));
         }
         return result;
     }

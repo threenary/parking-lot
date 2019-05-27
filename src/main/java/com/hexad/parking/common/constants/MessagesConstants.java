@@ -15,4 +15,6 @@ public interface MessagesConstants
     String SLOT_FREE = "Slot number %s is free";
 
     String VEHICLE_NOT_FOUND = "Not found";
+
+    String INVALID_COMMAND = "Command is invalid\n";
 }

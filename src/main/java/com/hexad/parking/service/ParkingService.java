@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.hexad.parking.common.exceptions.ParkingLotException;
 import com.hexad.parking.domain.Parking;
 import com.hexad.parking.domain.Slot;
 import com.hexad.parking.domain.Vehicle;
@@ -15,7 +16,7 @@ public interface ParkingService
      * Returns the empty slots in the Parking
      * @return the number of {@link Slot} without {@link Vehicle}
      */
-    long getFreeSlots();
+    long getAmountOfFreeSlots();
 
     /**
      * Assigns a vehicle to a free parking slot.
@@ -30,7 +31,7 @@ public interface ParkingService
      * @param slot
      * @return the empty slot if present
      */
-    Slot emptySlot(final Slot slot);
+    Slot emptySlot(final int slot);
 
     /**
      * Returns a current picture of all the parking status
@@ -58,4 +59,10 @@ public interface ParkingService
      * @return a {@link List} of {@link Slot}
      */
     List<Integer> getSlotsForColor(final String color);
+
+    /**
+     * Creates a parking lot with the amount of slots recieved as parameter
+     * @param size
+     */
+    void createParking(final int size) throws ParkingLotException;
 }

@@ -19,19 +19,25 @@ import com.hexad.parking.service.impl.ParkingServiceImpl;
 public class ParkingServiceTest
 {
     private final static int SIZE = 55;
-    private ParkingService testSubject;
+    private ParkingService testSubject = new ParkingServiceImpl();
 
     @Before
     public void setUp() throws Exception
     {
-        this.testSubject = new ParkingServiceImpl(SIZE);
+        testSubject.createParking(SIZE);
+    }
+
+    @Test
+    public void createParkingLotTest()
+    {
+        assertEquals(SIZE, testSubject.getAmountOfFreeSlots());
     }
 
     @Test
     public void createParkingServiceTest()
     {
         assertNotNull(testSubject);
-        assertEquals(55, testSubject.getFreeSlots());
+        assertEquals(55, testSubject.getAmountOfFreeSlots());
     }
 
     @Test
@@ -47,7 +53,7 @@ public class ParkingServiceTest
         assertNotNull(result);
         assertTrue(result.isPresent());
         assertEquals(1, result.get().getSlotId());
-        assertEquals(54, testSubject.getFreeSlots());
+        assertEquals(54, testSubject.getAmountOfFreeSlots());
     }
 
     @Test
@@ -66,7 +72,7 @@ public class ParkingServiceTest
         assertNotNull(result);
         assertTrue(result.isPresent());
         assertEquals(2, result.get().getSlotId());
-        assertEquals(53, testSubject.getFreeSlots());
+        assertEquals(53, testSubject.getAmountOfFreeSlots());
     }
 
     @Test
@@ -77,7 +83,7 @@ public class ParkingServiceTest
         final Optional<Slot> slot = testSubject.park(vehicle1);
 
         //when
-        testSubject.emptySlot(slot.get());
+        testSubject.emptySlot(slot.get().getSlotId());
 
         //then
         assertNull(testSubject.status().get(slot));

@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'application'
 
 group 'com.hexad'
 version '1.0-SNAPSHOT'
@@ -7,6 +8,24 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClassName = 'com.hexad.parking.Application'
+}
+
+run{
+    standardInput = System.in
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "com.hexad.parking.Application"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 dependencies {
