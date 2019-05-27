@@ -3,9 +3,11 @@ package com.hexad.parking.repository.impl;
 import static com.hexad.parking.common.constants.MessagesConstants.PARKING_EMPTY_NOT_ALLOWED;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.stream.Collectors;
 
 import com.hexad.parking.common.SlotComparator;
 import com.hexad.parking.common.exceptions.ParkingLotException;
@@ -80,6 +82,33 @@ public class ParkingRepositoryImpl implements ParkingRepository
             freeSlots.add(slot);
         }
         return slot;
+    }
+
+    @Override
+    public List<String> getLicensePlatesWithColor(final String color)
+    {
+        return parkingSlots.entrySet().stream()
+            .filter(entry -> entry.getValue() != null && entry.getValue().getColor().equals(color))
+            .map(entry -> entry.getValue().getLicensePlate())
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public Slot getSlotForRegistrationNumber(final String licensePlate)
+    {
+        Optional<Map.Entry<Slot, Vehicle>> result = parkingSlots.entrySet().stream()
+            .filter(entry -> entry.getValue() != null && entry.getValue().getLicensePlate().equals(licensePlate)).findFirst();
+
+        return result.map(Map.Entry::getKey).orElse(null);
+    }
+
+    @Override
+    public List<Slot> getSlotsForColor(final String color)
+    {
+        return parkingSlots.entrySet().stream()
+            .filter(entry -> entry.getValue() != null && entry.getValue().getColor().equals(color))
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
     }
 
 }

@@ -7,6 +7,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Rule;
@@ -30,6 +32,9 @@ public class ParkingRepositoryTest
     private static final String LICENSE_PLATE_TWO = "XYZ 789";
     private static final String COLOR_TWO = "Black";
     private static final Vehicle VEHICLE_TWO = new Vehicle(LICENSE_PLATE_TWO, COLOR_TWO);
+
+    private static final String LICENSE_PLATE_THREE = "HGD 567";
+    private static final Vehicle VEHICLE_THREE = new Vehicle(LICENSE_PLATE_THREE, COLOR_TWO);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -136,6 +141,62 @@ public class ParkingRepositoryTest
         //then
         assertNull(testSubject.getStatus().get(secondAssignedSlot));
         assertEquals(secondAssignedSlot.get().getSlotId(), testSubject.getFreeSlot().get().getSlotId());
+    }
+
+    @Test
+    public void getLicensePlatesWithColorTest() throws ParkingLotException
+    {
+        //given
+        testSubject = new ParkingRepositoryImpl(SIZE);
+        testSubject.assignSlot(VEHICLE_ONE);
+        testSubject.assignSlot(VEHICLE_TWO);
+        testSubject.assignSlot(VEHICLE_THREE);
+
+        //when
+        List<String> result = testSubject.getLicensePlatesWithColor("Black");
+
+        //then
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(2, result.size());
+        assertTrue(result.contains(LICENSE_PLATE_TWO));
+        assertTrue(result.contains(LICENSE_PLATE_THREE));
+        assertFalse(result.contains(LICENSE_PLATE_ONE));
+    }
+
+    @Test
+    public void getSlotForLicensePlateTest() throws ParkingLotException
+    {
+        //given
+        testSubject = new ParkingRepositoryImpl(SIZE);
+        final Optional<Slot> slotOne = testSubject.assignSlot(VEHICLE_ONE);
+        testSubject.assignSlot(VEHICLE_TWO);
+        testSubject.assignSlot(VEHICLE_THREE);
+
+        //when
+        Slot result = testSubject.getSlotForRegistrationNumber(LICENSE_PLATE_ONE);
+
+        //then
+        assertNotNull(result);
+        assertEquals(slotOne.get(), result);
+    }
+
+    @Test
+    public void getSlotsForColorTest() throws ParkingLotException
+    {
+        //given
+        testSubject = new ParkingRepositoryImpl(SIZE);
+        final Optional<Slot> slotOne = testSubject.assignSlot(VEHICLE_ONE);
+        final Optional<Slot> slotTwo = testSubject.assignSlot(VEHICLE_TWO);
+        final Optional<Slot> slotThree = testSubject.assignSlot(VEHICLE_THREE);
+
+        //when
+        List<Slot> result = testSubject.getSlotsForColor(COLOR_TWO);
+
+        //then
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertTrue(result.containsAll(Arrays.asList(slotTwo.get(), slotThree.get())));
     }
 
     @Test

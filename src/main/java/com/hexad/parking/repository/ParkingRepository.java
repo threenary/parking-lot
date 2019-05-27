@@ -1,5 +1,6 @@
 package com.hexad.parking.repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,4 +34,26 @@ public interface ParkingRepository
      * @param slot
      */
     Slot unassignSlot(final Slot slot);
+
+    /**
+     * Returns all the license plates for vehicles with the given color
+     * @param color
+     * @return a List of license plate in String format, or empty
+     */
+    List<String> getLicensePlatesWithColor(final String color);
+
+    /**
+     * Returns the slot for a given registration number
+     * @param licensePlate
+     * @return a {@link Slot}
+     */
+    Slot getSlotForRegistrationNumber(final String licensePlate);
+
+    /**
+     * Returns all the slot parks where vehicles of the given color are parked
+     * @param color
+     * @return a {@link List} of {@link Slot}
+     */
+    List<Slot> getSlotsForColor(final String color);
+
 }
